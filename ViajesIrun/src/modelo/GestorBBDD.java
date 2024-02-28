@@ -7,7 +7,33 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 public class GestorBBDD extends Conector{
-
+	
+	public Hotel getHotel(int id) {
+		String sentenciaSelect = "SELECT * FROM hoteles WHERE id = ?";
+		Hotel hotel = new Hotel();
+		PreparedStatement preparedSt;
+		
+		try {
+			preparedSt = con.prepareStatement(sentenciaSelect);
+			preparedSt.setInt(1, id);
+			ResultSet resultado = preparedSt.executeQuery();
+			
+			if (resultado.next()) {
+				hotel.setId(resultado.getInt("id"));
+				hotel.setCif(resultado.getString("cif"));
+				hotel.setNombre(resultado.getString("nombre"));
+				hotel.setGerente(resultado.getString("gerente"));
+				hotel.setEstrellas(resultado.getInt("estrellas"));
+				hotel.setCompañia(resultado.getString("compania"));
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		
+		return hotel;
+	}
 	
 	public ArrayList<Cliente> getClientes() {
 		String sentenciaSelect = "SELECT * FROM clientes";

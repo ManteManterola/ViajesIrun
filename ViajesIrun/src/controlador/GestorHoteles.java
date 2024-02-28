@@ -1,8 +1,9 @@
 package controlador;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
-import modelo.GestorBBDD;
+import modelo.*;
 import vista.Formulario;
 import vista.Menu;
 import vista.Visor;
@@ -24,13 +25,17 @@ public class GestorHoteles {
 			
 			case Menu.VISUALIZAR_HOTELES:
 				gestorBBDD.Conectar();
-				Visor.mostrarHoteles(gestorBBDD.getHoteles());
+				ArrayList <Hotel> hoteles = gestorBBDD.getHoteles();
+				hoteles.sort(new Comparador());
+				Visor.mostrarHoteles(hoteles);
 				gestorBBDD.cerrar();
 				break;
 				
 			case Menu.VISUALIZAR_HOTELES_CON_HABITACIONES:
 				gestorBBDD.Conectar();
-				Visor.mostrarHabitaciones(gestorBBDD.getHabitacionesConIdHotel(gestorBBDD.sacarIdConCif(Formulario.pedirCifHotel())));
+				Hotel hotel = gestorBBDD.getHotel(gestorBBDD.sacarIdConCif(Formulario.pedirCifHotel()));
+				System.out.println(hotel);
+				Visor.mostrarHabitaciones(gestorBBDD.getHabitacionesConIdHotel(hotel.getId()));
 				break;
 				
 			default:
